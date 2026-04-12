@@ -1,25 +1,36 @@
 from fastapi import APIRouter, HTTPException
+
 from app.api.schemas import AnalyzeRequest, AnalyzeResponse, Signal
+from app.services.pipeline import run_detection_pipeline
 from app.utils.image_io import fetch_image
-from app.services.feature_layer import analyze_image
-from app.services.aggregation import combine_scores
 
 router = APIRouter()
 
+
 @router.get("/health")
 def health():
-    return {"ok": True}
+    return {
+        "ok": True,
+        "service": "a-eye-api",
+        "architecture": "hybrid_cnn_feature",
+        "client": "browser_extension",
+    }
+
 
 @router.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(request: AnalyzeRequest):
     try:
-        img = await fetch_image(str(req.image_url))
-        feature_score = quickElaScore(img)
-        cnn_score = None #placeholder for future CNN score
-        final = combine_scores(feature_score, cnn_score)
-        signals = [
-            Signal(name="ela_placeholder", detail="Basic image variability proxy (replace with real ELA)", score=feature_score)
-        ]
-        return AnalyzeResponse(final_confidence=final, cnn_confidence=cnn_score, feature_confidence = feature_score ,signals=signals, meta={"version": "mvp-0"})
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        image = await fetch_image(str(request.image_url))
+        result = run_detection_pipeline(image)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    #this route stays intentionally thin so model experiments can change in the
+    #a simple service layer without repeatedly reshaping the HTTP contract
+    return AnalyzeResponse(
+        final_confidence=result.final_confidence,
+        cnn_confidence=result.cnn_confidence,
+        feature_confidence=result.feature_confidence,
+        signals=[Signal(**signal) for signal in result.signals],
+        meta=result.meta,
+    )

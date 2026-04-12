@@ -1,15 +1,15 @@
 {
-    "manifest_version": 3,
-    "name": "A-Eye",
-    "version": "0.1.0",
-    "description": "Checks image authenticity via A-Eye backend.",
-    "permissions": ["contextMenus"],
-    "host_permissions": ["http://localhost:8000/*"],
-    "background": {
-      "service_worker": "src/service_worker.js"
-    },
-    "action": {
-      "default_title": "A-Eye",
-      "default_popup": "src/ui/popup.html"
-    }
+  "manifest_version": 3,
+  "name": "A-Eye",
+  "version": "0.1.0",
+  "description": "Checks image authenticity via the A-Eye backend.",
+  "permissions": ["contextMenus", "storage"],
+  "host_permissions": ["http://localhost:8000/*"],
+  "background": {
+    "service_worker": "src/serviceWorker.js"
+  },
+  "action": {
+    "default_title": "A-Eye",
+    "default_popup": "src/ui/popup.html"
   }
+}

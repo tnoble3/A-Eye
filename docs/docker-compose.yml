@@ -1,0 +1,9 @@
+services:
+  aeye-backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: aeye-backend
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
