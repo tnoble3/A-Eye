@@ -1,10 +1,7 @@
 from __future__ import annotations
-
 from dataclasses import asdict, dataclass
 from math import exp
-
 from PIL import Image
-
 from app.services.feature_layer.ela import ELAFeatures, extract_ela_features
 from app.services.feature_layer.metadata import MetadataFeatures, extract_metadata_features
 from app.services.feature_layer.normalization import normalize_feature_mapping
@@ -13,14 +10,13 @@ from app.services.feature_layer.statistics import (
     extract_statistical_features,
 )
 
-
 FEATURE_BIAS = -1.35
 FEATURE_WEIGHTS = {
     "ela_mean_residual": 0.90,
     "ela_std_residual": 0.80,
     "ela_hotspot_ratio": 1.10,
     "metadata_missing_exif": 0.30,
-    "metadata_missing_camera_data": 0.35,
+    "metadata_missing_camera_data": 0.15, #lowering this weighting because some legitimate images can be missing camera data
     "metadata_software_marker": 0.80,
     "stats_channel_mean_gap": 0.35,
     "stats_channel_std_gap": 0.45,

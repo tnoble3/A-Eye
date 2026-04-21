@@ -222,6 +222,18 @@ def validate_loss(loss_value: float, stage: str, device: torch.device) -> None:
         )
 
 
+def move_batch_to_device(
+    images: torch.Tensor,
+    labels: torch.Tensor,
+    device: torch.device,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    non_blocking = device.type == "cuda"
+    return (
+        images.to(device, non_blocking=non_blocking),
+        labels.to(device=device, dtype=torch.float32, non_blocking=non_blocking),
+    )
+
+
 def train_one_epoch(
     model: nn.Module,
     loader: DataLoader,
@@ -235,8 +247,7 @@ def train_one_epoch(
     total_examples = 0
 
     for images, labels in loader:
-        images = images.to(device, non_blocking=True)
-        labels = labels.float().to(device, non_blocking=True)
+        images, labels = move_batch_to_device(images, labels, device)
 
         optimizer.zero_grad(set_to_none=True)
         logits = model(images)
@@ -270,8 +281,7 @@ def evaluate(
     total_examples = 0
 
     for images, labels in loader:
-        images = images.to(device, non_blocking=True)
-        labels = labels.float().to(device, non_blocking=True)
+        images, labels = move_batch_to_device(images, labels, device)
 
         logits = model(images)
         loss = criterion(logits, labels)

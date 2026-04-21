@@ -5,9 +5,9 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True, slots=True)
 class NormalizationSpec:
-    # Feature extraction produces raw numeric measurements. These specs convert
-    # them into bounded 0..1 values that the lightweight classifier can consume
-    # consistently across the backend and ML workspace.
+    #feature extraction produces raw numeric measurements. These specs convert
+    #them into bounded 0..1 values that the lightweight classifier can consume
+    #consistently across the backend and ML workspace.
     lower: float
     upper: float
 
@@ -16,7 +16,6 @@ class NormalizationSpec:
             raise ValueError("Normalization upper bound must be greater than lower bound.")
         normalized = (value - self.lower) / (self.upper - self.lower)
         return max(0.0, min(1.0, float(normalized)))
-
 
 FEATURE_NORMALIZATION_SPECS: dict[str, NormalizationSpec] = {
     "ela_mean_residual": NormalizationSpec(lower=0.0, upper=18.0),
@@ -31,7 +30,6 @@ FEATURE_NORMALIZATION_SPECS: dict[str, NormalizationSpec] = {
 }
 
 FEATURE_NAMES: tuple[str, ...] = tuple(FEATURE_NORMALIZATION_SPECS.keys())
-
 
 def normalize_feature_mapping(raw_values: dict[str, float]) -> dict[str, float]:
     missing_features = set(FEATURE_NAMES) - set(raw_values)

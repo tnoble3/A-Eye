@@ -1,0 +1,155 @@
+{
+  "config": {
+    "dataset_root": "/Users/trinitynoble/Documents/AEye/A-Eye/ml/data/image_dataset",
+    "output_dir": "ml/artifacts/cnn_v2",
+    "epochs": 15,
+    "batch_size": 128,
+    "image_size": 64,
+    "learning_rate": 0.0003,
+    "val_split": 0.2,
+    "num_workers": 4,
+    "seed": 42,
+    "device": "mps",
+    "train_limit": null,
+    "val_limit": null,
+    "test_limit": null
+  },
+  "device": "mps",
+  "class_to_idx": {
+    "FAKE": 0,
+    "REAL": 1
+  },
+  "dataset_sizes": {
+    "train": 80000,
+    "val": 20000,
+    "test": 20000
+  },
+  "best_epoch": 15,
+  "best_val_accuracy": 0.88315,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.6161323742389679,
+      "train_accuracy": 0.6483375,
+      "val_loss": 0.5595456795692444,
+      "val_accuracy": 0.70865,
+      "epoch_seconds": 38.274196375044994
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.5161728887081146,
+      "train_accuracy": 0.742175,
+      "val_loss": 0.4482880131244659,
+      "val_accuracy": 0.79855,
+      "epoch_seconds": 17.487181124975905
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.43532550830841066,
+      "train_accuracy": 0.8019,
+      "val_loss": 0.4354553541183472,
+      "val_accuracy": 0.7933,
+      "epoch_seconds": 18.169392084004357
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.4064800091743469,
+      "train_accuracy": 0.8207,
+      "val_loss": 0.38326690635681154,
+      "val_accuracy": 0.83565,
+      "epoch_seconds": 18.8196268749889
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.3879264334201813,
+      "train_accuracy": 0.8307125,
+      "val_loss": 0.38595982880592344,
+      "val_accuracy": 0.83,
+      "epoch_seconds": 19.42182316601975
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.37708355412483213,
+      "train_accuracy": 0.83595,
+      "val_loss": 0.35245599255561827,
+      "val_accuracy": 0.847,
+      "epoch_seconds": 19.38739574997453
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.3616949315071106,
+      "train_accuracy": 0.8433875,
+      "val_loss": 0.3446395852088928,
+      "val_accuracy": 0.8549,
+      "epoch_seconds": 19.433754666999448
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.35333660821914675,
+      "train_accuracy": 0.8486625,
+      "val_loss": 0.35711593890190124,
+      "val_accuracy": 0.8447,
+      "epoch_seconds": 18.984449875017162
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.3394117313861847,
+      "train_accuracy": 0.8559,
+      "val_loss": 0.32040900945663453,
+      "val_accuracy": 0.86775,
+      "epoch_seconds": 20.650009375007357
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.3341185369729996,
+      "train_accuracy": 0.8589875,
+      "val_loss": 0.3115740600585937,
+      "val_accuracy": 0.87035,
+      "epoch_seconds": 18.941413833992556
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.3239904084444046,
+      "train_accuracy": 0.8643875,
+      "val_loss": 0.3133232702255249,
+      "val_accuracy": 0.8681,
+      "epoch_seconds": 18.988409042009152
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.31808650228977203,
+      "train_accuracy": 0.866475,
+      "val_loss": 0.31209863715171815,
+      "val_accuracy": 0.8691,
+      "epoch_seconds": 18.937451208010316
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.31278281500339505,
+      "train_accuracy": 0.8701375,
+      "val_loss": 0.2968515213012695,
+      "val_accuracy": 0.877,
+      "epoch_seconds": 18.83847404201515
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.304768581533432,
+      "train_accuracy": 0.8732125,
+      "val_loss": 0.29763262033462523,
+      "val_accuracy": 0.87845,
+      "epoch_seconds": 18.899065666017123
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.29924766659736635,
+      "train_accuracy": 0.875925,
+      "val_loss": 0.2815004620552063,
+      "val_accuracy": 0.88315,
+      "epoch_seconds": 18.792572500009555
+    }
+  ],
+  "test": {
+    "loss": 0.2818946969985962,
+    "accuracy": 0.8839
+  }
+}

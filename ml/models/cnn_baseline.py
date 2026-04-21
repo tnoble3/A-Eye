@@ -3,7 +3,7 @@ from __future__ import annotations
 try:
     import torch
     from torch import nn
-except ModuleNotFoundError:  # pragma: no cover - the backend environment does not need torch
+except ModuleNotFoundError:  #back end might not have torch installed, so we provide a fallback that raises an error when the class is used
     torch = None
     nn = None
 
@@ -40,7 +40,7 @@ if nn is not None:
             logits = self.classifier(features)
             return logits.squeeze(-1)
 else:
-    class AEyeBaselineCNN:  # pragma: no cover - defensive fallback
+    class AEyeBaselineCNN:  
         def __init__(self) -> None:
             raise RuntimeError(
                 "PyTorch is required for the ML workspace. Install ml/requirements.txt "

@@ -31,6 +31,15 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
+## One Command Local Run
+
+```bash
+./run-dev.sh
+```
+
+This starts the backend, waits for the health check, and prints the unpacked
+extension path to load in Chrome.
+
 ## Running With Docker
 
 ```bash

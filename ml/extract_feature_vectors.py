@@ -1,12 +1,10 @@
 from __future__ import annotations
-
 import argparse
 import csv
 import json
 import sys
 from pathlib import Path
 from typing import Any
-
 import numpy as np
 from PIL import Image
 from sklearn.model_selection import StratifiedShuffleSplit
@@ -87,7 +85,6 @@ def maybe_limit_indices(indices: np.ndarray, limit: int | None, seed: int) -> np
     limited = rng.choice(indices, size=limit, replace=False)
     return np.sort(limited)
 
-
 def build_split_samples(
     dataset_root: Path,
     val_split: float,
@@ -98,7 +95,6 @@ def build_split_samples(
 ) -> tuple[dict[str, list[tuple[str, int]]], dict[str, int]]:
     train_source = datasets.ImageFolder(dataset_root / "train")
     test_source = datasets.ImageFolder(dataset_root / "test")
-
     targets = np.array(train_source.targets)
     splitter = StratifiedShuffleSplit(
         n_splits=1,
@@ -128,7 +124,6 @@ def extract_rows(
     for sample_path, label in samples:
         with Image.open(sample_path) as image:
             bundle = extract_feature_vector_bundle(image)
-
         row = {
             "split": split_name,
             "label": label,
@@ -137,7 +132,6 @@ def extract_rows(
         }
         rows.append(row)
     return rows
-
 
 def fit_standardization_profile(rows: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
     matrix = np.asarray(
@@ -175,11 +169,9 @@ def apply_standardization(
         normalized_rows.append(normalized_row)
     return normalized_rows
 
-
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     if not rows:
         raise ValueError(f"Cannot write empty CSV: {path}")
-
     fieldnames = ["split", "label", "path", *FEATURE_NAMES]
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)

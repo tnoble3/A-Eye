@@ -11,6 +11,9 @@ def test_health_reports_hybrid_service():
 
     assert response.status_code == 200
     assert response.json()["architecture"] == "hybrid_cnn_feature"
+    assert response.json()["processing_mode"] == "stateless"
+    assert response.headers["cache-control"].startswith("no-store")
+    assert response.headers["x-a-eye-processing-mode"] == "stateless"
 
 
 def test_analyze_returns_stub_pipeline_response(monkeypatch):
@@ -28,5 +31,7 @@ def test_analyze_returns_stub_pipeline_response(monkeypatch):
     payload = response.json()
     assert payload["meta"]["pipeline"] == "hybrid_feature_layer_v1"
     assert payload["cnn_confidence"] is None
+    assert payload["meta"]["privacy"]["processing_mode"] == "stateless"
     assert any(signal["name"] == "camera_metadata" for signal in payload["signals"])
+    assert response.headers["cache-control"].startswith("no-store")
     assert 0.0 <= payload["final_confidence"] <= 1.0

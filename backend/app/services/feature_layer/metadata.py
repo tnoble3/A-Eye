@@ -33,8 +33,7 @@ KNOWN_SOFTWARE_MARKERS = (
 
 @dataclass(slots=True)
 class MetadataFeatures:
-    # These fields stay numeric and lightweight so they can feed a shallow
-    # classifier later while still supporting user-facing explanations now.
+    #These fields stay numeric and lightweight so they can feed a shallow classifier later while still supporting user-facing explanations now.
     exif_tag_count: int
     camera_tag_count: int
     missing_exif_score: float
@@ -70,13 +69,11 @@ def extract_metadata_features(image: Image.Image) -> MetadataFeatures:
     tagged_exif = _extract_tagged_exif(image)
     info_values = {str(key).lower(): str(value) for key, value in image.info.items()}
 
-    # Camera provenance is useful because authentic camera captures often keep
-    # at least some EXIF trail, while screenshots, edited assets, and many
-    # generated images do not.
+    #camera provenance is useful because authentic camera captures often keep
+    #at least some EXIF trail, while screenshots, edited assets, and many generated images do not.
     has_exif = bool(tagged_exif)
     camera_tag_count = sum(1 for tag_name in CAMERA_TAG_NAMES if tagged_exif.get(tag_name))
     has_camera_data = camera_tag_count > 0
-
     software_tag_value = None
     for tag_name in SOFTWARE_TAG_NAMES:
         if tagged_exif.get(tag_name):
