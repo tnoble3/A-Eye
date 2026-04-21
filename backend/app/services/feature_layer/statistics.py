@@ -55,6 +55,8 @@ def extract_statistical_features(image: Image.Image) -> StatisticalArtifactFeatu
 
     #this is the noise inconsistency measurement inspired by error level analysis (ELA) techniques
     #manipulated regions often have different noise characteristics than the rest of the image
+    gray = rgb.mean(axis=2)
+    residual = np.abs(gray - _box_blur(gray))
     patch_grid = _patch_mean_grid(residual)
     noise_inconsistency = float(patch_grid.std() / (patch_grid.mean() + 1e-6))
 

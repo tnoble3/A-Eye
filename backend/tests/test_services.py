@@ -26,9 +26,13 @@ def test_feature_layer_returns_numeric_vector_and_interpretable_signals():
 
 def test_feature_vector_bundle_exposes_raw_and_normalized_vectors():
     bundle = extract_feature_vector_bundle(Image.new("RGB", (16, 16), color=(80, 120, 200)))
+    raw_values = bundle.raw.as_dict()
 
     assert set(bundle.raw.as_dict()) == set(bundle.normalized.as_dict())
-    assert any(value > 0.0 for value in bundle.raw.as_dict().values())
+    assert "ela_p95_residual" in raw_values
+    assert "ela_p99_residual" in raw_values
+    assert raw_values["ela_p99_residual"] >= raw_values["ela_p95_residual"]
+    assert any(value > 0.0 for value in raw_values.values())
     assert all(0.0 <= value <= 1.0 for value in bundle.normalized.as_dict().values())
 
 
