@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       :root {
-        --bg: radial-gradient(circle,rgb(212, 124, 228) 25%, rgb(53, 26, 104) 93%);
+        --bg-image: url("../../assets/AEyeBackground.png");
+        --bg-fallback: #eadcf8;
         --panel: rgba(232, 219, 252, 0.741);
         --panel-strong: rgba(255, 255, 255, 0.94);
         --ink: #170589;
@@ -17,15 +18,24 @@
         --border: rgba(23, 50, 45, 0.14);
       }
 
+      html {
+        background: var(--bg-fallback);
+      }
+
       body {
         margin: 0;
         width: 360px;
         min-height: 460px;
         font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
         color: var(--ink);
-        background: var(--bg);
+        background-color: var(--bg-fallback);
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16)),
+          var(--bg-image);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
         overflow: hidden;
-
       }
 
       .shell {
@@ -234,8 +244,7 @@
 
       .button.primary {
         background: #B6E47C;
-        color: var();
-        
+        color: var(--ink);
       }
 
       .button.secondary {

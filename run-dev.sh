@@ -33,11 +33,18 @@ if [[ ! -x "$PYTHON_BIN" ]]; then
   echo "Creating backend virtual environment..."
   python3 -m venv "$BACKEND_VENV"
 fi
-if ! "$PYTHON_BIN" -c "import fastapi, uvicorn" >/dev/null 2>&1; then
+if ! "$PYTHON_BIN" -c "import fastapi, torch, uvicorn" >/dev/null 2>&1; then
   echo "Installing backend dependencies..."
   "$PIP_BIN" install --upgrade pip
   "$PIP_BIN" install -r "$BACKEND_DIR/requirements.txt"
 fi
+
+if lsof -nP -iTCP:8000 -sTCP:LISTEN >/dev/null 2>&1; then
+  echo "Port 8000 is already in use. Stop the existing service before running ./run-dev.sh." >&2
+  lsof -nP -iTCP:8000 -sTCP:LISTEN >&2
+  exit 1
+fi
+
 cleanup() {
   if [[ -n "${SERVER_PID:-}" ]] && kill -0 "$SERVER_PID" >/dev/null 2>&1; then
     kill "$SERVER_PID" >/dev/null 2>&1 || true
@@ -74,6 +81,12 @@ then
   echo "Backend did not become healthy at $HEALTH_URL" >&2
   exit 1
 fi
+
+if ! kill -0 "$SERVER_PID" >/dev/null 2>&1; then
+  echo "The backend process exited before it could serve requests." >&2
+  exit 1
+fi
+
 cat <<EOF
 A-Eye backend is running.
 

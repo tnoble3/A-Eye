@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 
 from app.config import get_settings
 from app.api.schemas import AnalyzeRequest, AnalyzeResponse, Signal
+from app.services.model_layer import get_cnn_unavailable_reason
 from app.services.pipeline import run_detection_pipeline
 from app.utils.image_io import fetch_image
 
@@ -11,11 +12,14 @@ settings = get_settings()
 
 @router.get("/health")
 def health():
+    cnn_unavailable_reason = get_cnn_unavailable_reason()
     return {
         "ok": True,
         "service": "a-eye-api",
         "architecture": "hybrid_cnn_feature",
         "client": "browser_extension",
+        "cnn_available": cnn_unavailable_reason is None,
+        "cnn_unavailable_reason": cnn_unavailable_reason,
         "processing_mode": "stateless" if settings.stateless_processing else "stateful",
         "image_retention": settings.image_retention,
         "persist_request_logs": settings.persist_request_logs,

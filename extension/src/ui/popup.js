@@ -106,19 +106,19 @@ function renderSummary(state) {
   const result = state.result || {};
   const finalPercent = Math.round((result.final_confidence || 0) * 100);
   const featurePercent = Math.round((result.feature_confidence || 0) * 100);
-  const modeLabel = result.meta?.deployed_cnn ? "Hybrid mode" : "Feature-first mode";
+  const modeLabel = result.meta?.deployed_cnn ? "Hybrid Mode" : "Feature First mode";
 
   const scoreGrid = createElement("div", "score-grid");
 
   const finalCard = createElement("div", "score-card");
   finalCard.appendChild(createElement("strong", "", `${finalPercent}%`));
-  finalCard.appendChild(createElement("div", "muted", "Estimated AI-generation likelihood"));
+  finalCard.appendChild(createElement("div", "muted", "Estimated AI Generation Likelihood"));
   finalCard.appendChild(createElement("div", "meta", modeLabel));
   scoreGrid.appendChild(finalCard);
 
   const featureCard = createElement("div", "score-card");
   featureCard.appendChild(createElement("strong", "", `${featurePercent}%`));
-  featureCard.appendChild(createElement("div", "muted", "Feature-layer confidence"));
+  featureCard.appendChild(createElement("div", "muted", "Feature Layer Confidence"));
   const privacyLabel = result.meta?.privacy?.processing_mode || "stateless";
   featureCard.appendChild(createElement("div", "meta", privacyLabel));
   scoreGrid.appendChild(featureCard);

@@ -11,6 +11,8 @@ def test_health_reports_hybrid_service():
 
     assert response.status_code == 200
     assert response.json()["architecture"] == "hybrid_cnn_feature"
+    assert response.json()["cnn_available"] is True
+    assert response.json()["cnn_unavailable_reason"] is None
     assert response.json()["processing_mode"] == "stateless"
     assert response.headers["cache-control"].startswith("no-store")
     assert response.headers["x-a-eye-processing-mode"] == "stateless"
@@ -21,6 +23,7 @@ def test_analyze_returns_stub_pipeline_response(monkeypatch):
         return Image.new("RGB", (16, 16), color=(120, 140, 160))
 
     monkeypatch.setattr("app.api.routes.fetch_image", fake_fetch_image)
+    monkeypatch.setattr("app.services.pipeline.estimate_cnn_confidence", lambda _: None)
 
     response = client.post(
         "/analyze",

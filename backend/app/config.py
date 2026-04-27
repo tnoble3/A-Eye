@@ -1,9 +1,22 @@
 from __future__ import annotations
-
 import os
 from dataclasses import dataclass
 from functools import lru_cache
+from pathlib import Path
 
+CNN_CHECKPOINT_RELATIVE_PATH = Path("ml") / "artifacts" / "cnn_baseline" / "best_model.pt"
+
+
+def resolve_default_cnn_checkpoint_path(config_path: Path | None = None) -> Path:
+    source_path = (config_path or Path(__file__)).resolve()
+    candidates = (
+        source_path.parents[2] / CNN_CHECKPOINT_RELATIVE_PATH,
+        source_path.parents[1] / CNN_CHECKPOINT_RELATIVE_PATH,
+    )
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return candidates[0]
 
 def _get_bool(name: str, default: bool) -> bool:
     raw = os.getenv(name)
@@ -11,13 +24,11 @@ def _get_bool(name: str, default: bool) -> bool:
         return default
     return raw.strip().lower() in {"1", "true", "yes", "on"}
 
-
 def _get_float(name: str, default: float) -> float:
     raw = os.getenv(name)
     if raw is None:
         return default
     return float(raw)
-
 
 def _get_int(name: str, default: int) -> int:
     raw = os.getenv(name)
@@ -25,11 +36,9 @@ def _get_int(name: str, default: int) -> int:
         return default
     return int(raw)
 
-
 @dataclass(frozen=True, slots=True)
 class AppSettings:
-    # These settings keep privacy-sensitive behavior explicit instead of
-    # depending on incidental implementation details.
+    #these settings allow for the privacy of the user to be protected
     stateless_processing: bool
     image_retention: str
     persist_request_logs: bool
@@ -38,7 +47,8 @@ class AppSettings:
     max_image_bytes: int
     cors_allow_origin_regex: str
     cache_control_header: str
-
+    cnn_enabled: bool
+    cnn_checkpoint_path: Path
 
 @lru_cache(maxsize=1)
 def get_settings() -> AppSettings:
@@ -56,5 +66,12 @@ def get_settings() -> AppSettings:
         cache_control_header=os.getenv(
             "A_EYE_CACHE_CONTROL",
             "no-store, no-cache, must-revalidate, max-age=0",
+        ),
+        cnn_enabled=_get_bool("A_EYE_CNN_ENABLED", True),
+        cnn_checkpoint_path=Path(
+            os.getenv(
+                "A_EYE_CNN_CHECKPOINT_PATH",
+                str(resolve_default_cnn_checkpoint_path()),
+            )
         ),
     )

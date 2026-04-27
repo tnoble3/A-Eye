@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
 from app.config import get_settings
 from app.api.routes import router
 
@@ -16,8 +15,6 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware,
-    # Browser extensions and local dev clients still need access, but the API
-    # does not need to be universally open.
     allow_origins=[],
     allow_origin_regex=settings.cors_allow_origin_regex,
     allow_credentials=False,
@@ -25,13 +22,10 @@ app.add_middleware(
     allow_headers=["Content-Type"],
 )
 
-
 @app.middleware("http")
 async def apply_privacy_headers(request, call_next):
     response = await call_next(request)
-
-    # The backend is meant to behave like a stateless analysis edge: no cache,
-    # no browser referrer sharing, and no persistence hints.
+    #these headers focus on privacy and secutity, in addition to opting out of caching
     response.headers["Cache-Control"] = settings.cache_control_header
     response.headers["Pragma"] = "no-cache"
     response.headers["Referrer-Policy"] = "no-referrer"
@@ -41,6 +35,5 @@ async def apply_privacy_headers(request, call_next):
         "stateless" if settings.stateless_processing else "stateful"
     )
     return response
-
 
 app.include_router(router)

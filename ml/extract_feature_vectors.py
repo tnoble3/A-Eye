@@ -150,7 +150,6 @@ def fit_standardization_profile(rows: list[dict[str, Any]]) -> dict[str, dict[st
         for index, feature_name in enumerate(FEATURE_NAMES)
     }
 
-
 def apply_standardization(
     rows: list[dict[str, Any]],
     profile: dict[str, dict[str, float]],
@@ -177,7 +176,6 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
-
 
 def main() -> None:
     args = parse_args()
@@ -229,7 +227,5 @@ def main() -> None:
     print(f"Output directory: {output_dir}")
     print(f"Split sizes: {manifest['split_sizes']}")
     print(f"Manifest: {output_dir / 'manifest.json'}")
-
-
 if __name__ == "__main__":
     main()
