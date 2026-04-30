@@ -1,1 +1,1 @@
-from .cnn_stub import estimate_cnn_confidence
+from .cnn_stub import estimate_cnn_confidence, get_cnn_unavailable_reason

@@ -5,7 +5,10 @@ from PIL import Image
 
 from app.services.aggregation import combine_scores
 from app.services.feature_layer import analyze_feature_layer
-from app.services.model_layer import estimate_cnn_confidence
+from app.services.model_layer import (
+    estimate_cnn_confidence,
+    get_cnn_unavailable_reason,
+)
 
 
 @dataclass(slots=True)
@@ -29,11 +32,10 @@ def run_detection_pipeline(image: Image.Image) -> DetectionPipelineResult:
     if cnn_score is None:
         signals.append(
             {
-                "name": "cnn_baseline_pending_deployment",
+                "name": "cnn_baseline_unavailable",
                 "detail": (
-                    "The baseline CNN has been started in the training "
-                    "workspace, but inference weights are not wired into the "
-                    "API yet."
+                    get_cnn_unavailable_reason()
+                    or "The baseline CNN is unavailable in the current backend environment."
                 ),
                 "score": feature_result.confidence,
             }

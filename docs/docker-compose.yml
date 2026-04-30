@@ -1,9 +1,21 @@
 services:
   aeye-backend:
     build:
-      context: ../backend
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: backend/Dockerfile
     container_name: aeye-backend
     ports:
       - "8000:8000"
+    environment:
+      A_EYE_STATELESS_PROCESSING: "true"
+      A_EYE_IMAGE_RETENTION: "memory_only"
+      A_EYE_PERSIST_REQUEST_LOGS: "false"
+      A_EYE_ALLOW_PRIVATE_IMAGE_HOSTS: "false"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     restart: unless-stopped

@@ -1,10 +1,7 @@
 from __future__ import annotations
-
 from dataclasses import asdict, dataclass
 from math import exp
-
 from PIL import Image
-
 from app.services.feature_layer.ela import ELAFeatures, extract_ela_features
 from app.services.feature_layer.metadata import MetadataFeatures, extract_metadata_features
 from app.services.feature_layer.normalization import normalize_feature_mapping
@@ -13,14 +10,16 @@ from app.services.feature_layer.statistics import (
     extract_statistical_features,
 )
 
-
 FEATURE_BIAS = -1.35
 FEATURE_WEIGHTS = {
-    "ela_mean_residual": 0.90,
-    "ela_std_residual": 0.80,
-    "ela_hotspot_ratio": 1.10,
+    "ela_mean_residual": 0.55,
+    "ela_std_residual": 0.45,
+    "ela_hotspot_ratio": 0.65,
+    "ela_p95_residual": 0.55,
+    "ela_p99_residual": 0.65,
+    "ela_hotspot_residual_share": 0.45,
     "metadata_missing_exif": 0.30,
-    "metadata_missing_camera_data": 0.35,
+    "metadata_missing_camera_data": 0.15, #lowering this weighting because some legitimate images can be missing camera data
     "metadata_software_marker": 0.80,
     "stats_channel_mean_gap": 0.35,
     "stats_channel_std_gap": 0.45,
@@ -35,6 +34,9 @@ class RawFeatureVector:
     ela_mean_residual: float
     ela_std_residual: float
     ela_hotspot_ratio: float
+    ela_p95_residual: float
+    ela_p99_residual: float
+    ela_hotspot_residual_share: float
     metadata_missing_exif: float
     metadata_missing_camera_data: float
     metadata_software_marker: float
@@ -53,6 +55,9 @@ class FeatureVector:
     ela_mean_residual: float
     ela_std_residual: float
     ela_hotspot_ratio: float
+    ela_p95_residual: float
+    ela_p99_residual: float
+    ela_hotspot_residual_share: float
     metadata_missing_exif: float
     metadata_missing_camera_data: float
     metadata_software_marker: float
@@ -99,6 +104,9 @@ def _build_raw_feature_vector(
         ela_mean_residual=ela.mean_residual,
         ela_std_residual=ela.std_residual,
         ela_hotspot_ratio=ela.hotspot_ratio,
+        ela_p95_residual=ela.p95_residual,
+        ela_p99_residual=ela.p99_residual,
+        ela_hotspot_residual_share=ela.hotspot_residual_share,
         metadata_missing_exif=metadata.missing_exif_score,
         metadata_missing_camera_data=metadata.missing_camera_data_score,
         metadata_software_marker=metadata.software_marker_score,
@@ -115,9 +123,12 @@ def _normalize_raw_vector(raw_vector: RawFeatureVector) -> FeatureVector:
 
 def _score_ela_component(vector: FeatureVector) -> float:
     return round(
-        (0.40 * vector.ela_mean_residual)
-        + (0.35 * vector.ela_std_residual)
-        + (0.25 * vector.ela_hotspot_ratio),
+        (0.20 * vector.ela_mean_residual)
+        + (0.18 * vector.ela_std_residual)
+        + (0.20 * vector.ela_hotspot_ratio)
+        + (0.16 * vector.ela_p95_residual)
+        + (0.16 * vector.ela_p99_residual)
+        + (0.10 * vector.ela_hotspot_residual_share),
         4,
     )
 

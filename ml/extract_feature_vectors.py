@@ -1,12 +1,10 @@
 from __future__ import annotations
-
 import argparse
 import csv
 import json
 import sys
 from pathlib import Path
 from typing import Any
-
 import numpy as np
 from PIL import Image
 from sklearn.model_selection import StratifiedShuffleSplit
@@ -19,7 +17,7 @@ BACKEND_DIR = REPO_ROOT / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-from app.services.feature_layer import FEATURE_NAMES, extract_feature_vector_bundle  # noqa: E402
+from app.services.feature_layer import FEATURE_NAMES, extract_feature_vector_bundle
 
 
 DEFAULT_DATASET_ROOT = BASE_DIR / "data" / "image_dataset"
@@ -87,7 +85,6 @@ def maybe_limit_indices(indices: np.ndarray, limit: int | None, seed: int) -> np
     limited = rng.choice(indices, size=limit, replace=False)
     return np.sort(limited)
 
-
 def build_split_samples(
     dataset_root: Path,
     val_split: float,
@@ -98,7 +95,6 @@ def build_split_samples(
 ) -> tuple[dict[str, list[tuple[str, int]]], dict[str, int]]:
     train_source = datasets.ImageFolder(dataset_root / "train")
     test_source = datasets.ImageFolder(dataset_root / "test")
-
     targets = np.array(train_source.targets)
     splitter = StratifiedShuffleSplit(
         n_splits=1,
@@ -128,7 +124,6 @@ def extract_rows(
     for sample_path, label in samples:
         with Image.open(sample_path) as image:
             bundle = extract_feature_vector_bundle(image)
-
         row = {
             "split": split_name,
             "label": label,
@@ -137,7 +132,6 @@ def extract_rows(
         }
         rows.append(row)
     return rows
-
 
 def fit_standardization_profile(rows: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
     matrix = np.asarray(
@@ -155,7 +149,6 @@ def fit_standardization_profile(rows: list[dict[str, Any]]) -> dict[str, dict[st
         }
         for index, feature_name in enumerate(FEATURE_NAMES)
     }
-
 
 def apply_standardization(
     rows: list[dict[str, Any]],
@@ -175,17 +168,14 @@ def apply_standardization(
         normalized_rows.append(normalized_row)
     return normalized_rows
 
-
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     if not rows:
         raise ValueError(f"Cannot write empty CSV: {path}")
-
     fieldnames = ["split", "label", "path", *FEATURE_NAMES]
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
-
 
 def main() -> None:
     args = parse_args()
@@ -237,7 +227,5 @@ def main() -> None:
     print(f"Output directory: {output_dir}")
     print(f"Split sizes: {manifest['split_sizes']}")
     print(f"Manifest: {output_dir / 'manifest.json'}")
-
-
 if __name__ == "__main__":
     main()

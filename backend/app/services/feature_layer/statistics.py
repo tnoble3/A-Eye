@@ -8,12 +8,10 @@ from PIL import Image
 
 @dataclass(slots=True)
 class StatisticalArtifactFeatures:
-    # These are raw statistical measurements. They are normalized later using a
-    # shared spec so the same feature definitions can be reused in ML training.
+    #These are raw statistical measurements. They are normalized later using a shared spec so the same feature definitions can be reused in ML training.
     channel_mean_gap: float
     channel_std_gap: float
     noise_inconsistency: float
-
 
 def _box_blur(gray_image: np.ndarray) -> np.ndarray:
     padded = np.pad(gray_image, 1, mode="edge")
@@ -28,7 +26,6 @@ def _box_blur(gray_image: np.ndarray) -> np.ndarray:
         + padded[2:, 1:-1]
         + padded[2:, 2:]
     ) / 9.0
-
 
 def _patch_mean_grid(values: np.ndarray) -> np.ndarray:
     height, width = values.shape
@@ -48,16 +45,16 @@ def extract_statistical_features(image: Image.Image) -> StatisticalArtifactFeatu
     rgb_image = image.convert("RGB")
     rgb = np.asarray(rgb_image, dtype=np.float32) / 255.0
 
-    # Channel distribution gaps are a cheap proxy for color inconsistency. They
-    # should not decide the verdict alone, but they add useful forensic texture.
+    #channel gaps measure the inconsistencies between color channels
+    #manipulated regions often have different color profiles than the rest of the image, 
+    #leading to larger gaps between channel statistics.
     channel_means = rgb.mean(axis=(0, 1))
     channel_stds = rgb.std(axis=(0, 1))
     channel_mean_gap = float(channel_means.max() - channel_means.min())
     channel_std_gap = float(channel_stds.max() - channel_stds.min())
 
-    # Noise consistency is estimated from the high-frequency residual after a
-    # tiny blur. Manipulated regions often have a different residual profile
-    # than the rest of the image.
+    #this is the noise inconsistency measurement inspired by error level analysis (ELA) techniques
+    #manipulated regions often have different noise characteristics than the rest of the image
     gray = rgb.mean(axis=2)
     residual = np.abs(gray - _box_blur(gray))
     patch_grid = _patch_mean_grid(residual)

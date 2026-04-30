@@ -5,9 +5,9 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True, slots=True)
 class NormalizationSpec:
-    # Feature extraction produces raw numeric measurements. These specs convert
-    # them into bounded 0..1 values that the lightweight classifier can consume
-    # consistently across the backend and ML workspace.
+    #feature extraction produces raw numeric measurements. These specs convert
+    #them into bounded 0..1 values that the lightweight classifier can consume
+    #consistently across the backend and ML workspace.
     lower: float
     upper: float
 
@@ -17,11 +17,13 @@ class NormalizationSpec:
         normalized = (value - self.lower) / (self.upper - self.lower)
         return max(0.0, min(1.0, float(normalized)))
 
-
 FEATURE_NORMALIZATION_SPECS: dict[str, NormalizationSpec] = {
     "ela_mean_residual": NormalizationSpec(lower=0.0, upper=18.0),
     "ela_std_residual": NormalizationSpec(lower=0.0, upper=18.0),
     "ela_hotspot_ratio": NormalizationSpec(lower=0.0, upper=0.25),
+    "ela_p95_residual": NormalizationSpec(lower=0.0, upper=35.0),
+    "ela_p99_residual": NormalizationSpec(lower=0.0, upper=55.0),
+    "ela_hotspot_residual_share": NormalizationSpec(lower=0.0, upper=0.60),
     "metadata_missing_exif": NormalizationSpec(lower=0.0, upper=1.0),
     "metadata_missing_camera_data": NormalizationSpec(lower=0.0, upper=1.0),
     "metadata_software_marker": NormalizationSpec(lower=0.0, upper=1.0),
@@ -31,7 +33,6 @@ FEATURE_NORMALIZATION_SPECS: dict[str, NormalizationSpec] = {
 }
 
 FEATURE_NAMES: tuple[str, ...] = tuple(FEATURE_NORMALIZATION_SPECS.keys())
-
 
 def normalize_feature_mapping(raw_values: dict[str, float]) -> dict[str, float]:
     missing_features = set(FEATURE_NAMES) - set(raw_values)
