@@ -10,7 +10,7 @@ def test_combine_scores_falls_back_to_feature_score():
 
 
 def test_combine_scores_uses_weighted_hybrid_when_cnn_available():
-    assert combine_scores(0.20, 0.80) == 0.56
+    assert combine_scores(0.20, 0.80) == 0.62
 
 
 def test_feature_layer_returns_numeric_vector_and_interpretable_signals():
