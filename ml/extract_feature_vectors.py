@@ -17,7 +17,7 @@ BACKEND_DIR = REPO_ROOT / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-from app.services.feature_layer import FEATURE_NAMES, extract_feature_vector_bundle  # noqa: E402
+from app.services.feature_layer import FEATURE_NAMES, extract_feature_vector_bundle
 
 
 DEFAULT_DATASET_ROOT = BASE_DIR / "data" / "image_dataset"

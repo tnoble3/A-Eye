@@ -32,7 +32,3 @@ scale independently from the browser client.
 - The current pipeline is intentionally modular so the CNN, feature analysis,
   and aggregation layers can evolve independently.
 
-## Near-Term Follow-Up
-- Replace the CNN inference stub with exported baseline model weights.
-- Add request logging that excludes raw image content.
-- Introduce rate limiting once the service moves beyond local development.

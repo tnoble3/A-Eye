@@ -10,6 +10,24 @@ function createElement(tagName, className, text) {
   return element;
 }
 
+function formatPercent(value) {
+  if (typeof value !== "number" || Number.isNaN(value)) {
+    return "N/A";
+  }
+  return `${Math.round(value * 100)}%`;
+}
+
+function appendScoreCard(root, { value, label, meta, wide = false }) {
+  const className = wide ? "score-card score-card-wide" : "score-card";
+  const card = createElement("div", className);
+  card.appendChild(createElement("strong", "", value));
+  card.appendChild(createElement("div", "muted", label));
+  if (meta) {
+    card.appendChild(createElement("div", "meta", meta));
+  }
+  root.appendChild(card);
+}
+
 //converts an ISO timestamp into a human friendly time format
 function formatTimestamp(value) {
   if (!value) {
@@ -104,24 +122,28 @@ function renderSummary(state) {
   }
 
   const result = state.result || {};
-  const finalPercent = Math.round((result.final_confidence || 0) * 100);
-  const featurePercent = Math.round((result.feature_confidence || 0) * 100);
   const modeLabel = result.meta?.deployed_cnn ? "Hybrid Mode" : "Feature First mode";
+  const privacyLabel = result.meta?.privacy?.processing_mode || "stateless";
+  const cnnAvailable = typeof result.cnn_confidence === "number";
 
   const scoreGrid = createElement("div", "score-grid");
 
-  const finalCard = createElement("div", "score-card");
-  finalCard.appendChild(createElement("strong", "", `${finalPercent}%`));
-  finalCard.appendChild(createElement("div", "muted", "Estimated AI Generation Likelihood"));
-  finalCard.appendChild(createElement("div", "meta", modeLabel));
-  scoreGrid.appendChild(finalCard);
-
-  const featureCard = createElement("div", "score-card");
-  featureCard.appendChild(createElement("strong", "", `${featurePercent}%`));
-  featureCard.appendChild(createElement("div", "muted", "Feature Layer Confidence"));
-  const privacyLabel = result.meta?.privacy?.processing_mode || "stateless";
-  featureCard.appendChild(createElement("div", "meta", privacyLabel));
-  scoreGrid.appendChild(featureCard);
+  appendScoreCard(scoreGrid, {
+    value: formatPercent(result.final_confidence),
+    label: "Estimated AI Generation Likelihood",
+    meta: modeLabel,
+    wide: true,
+  });
+  appendScoreCard(scoreGrid, {
+    value: formatPercent(result.feature_confidence),
+    label: "Likelyhood Based on Feature Layer Confidence",
+    meta: privacyLabel,
+  });
+  appendScoreCard(scoreGrid, {
+    value: formatPercent(result.cnn_confidence),
+    label: "Likelyhood Based on CNN Model Confidence",
+    meta: cnnAvailable ? "Baseline CNN" : "Unavailable",
+  });
 
   summary.appendChild(scoreGrid);
 }

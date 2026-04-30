@@ -1,6 +1,5 @@
 # A-Eye
-
-A-Eye is a browser-assisted image authenticity checker built around a thin
+A-Eye is a browser assisted image authenticity checker, built around a thin
 extension client and a FastAPI backend. The current prototype is organized to
 support a hybrid detection pipeline that combines a CNN baseline with
 feature-level forensic analysis.
@@ -14,9 +13,8 @@ extension/  Browser extension service worker and popup UI
 ml/         Baseline model training workspace
 ```
 
-## Current Prototype Focus
+## Current Focus
 
-- Structured repository layout for backend, ML, docs, extension, and tests
 - FastAPI and Uvicorn backend setup
 - Request and response schemas for the `/analyze` endpoint
 - Stub hybrid pipeline with feature analysis and a CNN deployment placeholder
@@ -52,4 +50,3 @@ docker compose -f docs/docker-compose.yml up --build
 - `docs/privacy.md`
 - `docs/model-evaluation.md`
 - `docs/model-training.md`
-- `docs/ui-direction.md`
