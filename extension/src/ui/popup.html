@@ -1,0 +1,354 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --bg-image: url("../../assets/AEyeBackground.png");
+        --bg-fallback: #eadcf8;
+        --panel: rgba(232, 219, 252, 0.741);
+        --panel-strong: rgba(255, 255, 255, 0.94);
+        --ink: #170589;
+        --muted: #6F38D6;
+        --accent: #F3459C;
+        --accent-soft: #38b6ff7d;
+        --warn: #8c6b29;
+        --danger: #8c0202;
+        --border: rgba(23, 50, 45, 0.14);
+      }
+
+      html {
+        background: var(--bg-fallback);
+      }
+
+      body {
+        margin: 0;
+        width: 360px;
+        min-height: 460px;
+        font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
+        color: var(--ink);
+        background-color: var(--bg-fallback);
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16)),
+          var(--bg-image);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        overflow: hidden;
+      }
+
+      .shell {
+        padding: 16px 16px 18px;
+      }
+
+      .panel {
+        background: var(--panel);
+        backdrop-filter: blur(8px);
+        border: 1px solid var(--border);
+        border-radius: 42px;
+        padding: 16px;
+        box-shadow: 0 18px 36px rgba(23, 50, 45, 0.12);
+      }
+
+      .hero {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+        margin-bottom: 14px;
+      }
+
+      .eyebrow {
+        margin: 0 0 6px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        padding: 7px 10px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        background: #c2f6836a;
+        color: var(--accent);
+      }
+
+      .status-pill.warn {
+        background: rgba(185, 74, 170, 0.14);
+        color: var(--warn);
+      }
+
+      .status-pill.error {
+        background: rgba(138, 52, 73, 0.14);
+        color: var(--danger);
+      }
+
+      .status-pill.idle {
+        background: #6f38d686;
+        color: var(--muted);
+      }
+
+      .big {
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1;
+        margin: 0 0 8px;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .meta {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: rgba(205, 141, 235, 0.373);
+        color: var(--accent);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .section {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid var(--border);
+      }
+
+      .section-title {
+        margin: 0 0 10px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .disclaimer {
+        font-size: 14px;
+        font-weight:800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        line-height: 1.4;
+        color: var(--danger);
+      }
+      .info-card {
+        padding: 12px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: var(--panel-strong);
+      }
+
+      .info-label {
+        margin: 0 0 4px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .info-value {
+        font-size: 13px;
+        line-height: 1.45;
+        word-break: break-word;
+      }
+
+      .image-preview {
+        width: 100%;
+        max-height: 180px;
+        object-fit: contain;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.58);
+        margin-bottom: 12px;
+      }
+
+      .score-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .score-card {
+        padding: 12px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.76);
+        border: 1px solid var(--border);
+      }
+
+      .score-card-wide {
+        grid-column: 1 / -1;
+      }
+
+      .score-card strong {
+        display: block;
+        font-size: 20px;
+        line-height: 1.1;
+        margin-bottom: 4px;
+      }
+
+      .controls {
+        display: grid;
+        gap: 10px;
+      }
+
+      .toggle {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 12px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.76);
+        border: 1px solid var(--border);
+      }
+
+      .toggle-copy {
+        min-width: 0;
+      }
+
+      .toggle-title {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+
+      .toggle-copy p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .toggle input {
+        margin-top: 2px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .button {
+        border: 0;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .button.primary {
+        background: #B6E47C;
+        color: var(--ink);
+      }
+
+      .button.secondary {
+        background: #B6E47C;
+        color: var(--ink);
+        border: 1px solid var(--border);
+      }
+
+      .signals {
+        display: grid;
+        gap: 8px;
+      }
+
+      .sig {
+        padding: 10px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .sig-title {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .error {
+        color: var(--danger);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="panel">
+        <div class="hero">
+          <div>
+            <div class="eyebrow">A-Eye</div>
+            <div class="big">Context Scan</div>
+            <div class="muted">Right click any image to determine the likelihood of it being AI generated. </div>
+          </div>
+          <div id="statusPill" class="status-pill idle">Idle</div>
+        </div>
+
+        <div id="summary"></div>
+
+        <div class="section">
+          <div class="section-title">Source</div>
+          <div id="sourceCard" class="info-card muted">
+            No image has been analyzed in this browser session.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Signals</div>
+          <div id="signals" class="signals muted">
+            Run an analysis from the image context menu to populate feature level findings.
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Privacy Controls</div>
+          <div class="controls">
+            <label class="toggle">
+              <div class="toggle-copy">
+                <div class="toggle-title">Mask source URL</div>
+                <p>Hide the full image URL in the popup and stored extension state.</p>
+              </div>
+              <input id="redactSourceUrl" type="checkbox" />
+            </label>
+
+            <label class="toggle">
+              <div class="toggle-copy">
+                <div class="toggle-title">Keep result across restarts</div>
+                <p>Off by default so the last analysis stays session only and stateless.</p>
+              </div>
+              <input id="persistResults" type="checkbox" />
+            </label>
+          </div>
+
+          <div class="actions">
+            <button id="saveSettings" class="button primary" type="button">Save Controls</button>
+            <button id="clearResult" class="button secondary" type="button">Clear Result</button>
+          </div>
+        <div class="section">
+          <div class ="disclaimer">Disclaimer</div>
+          <div class="info-card muted">
+            A-Eye provides an analysis of the that an image was generated by an AI model based on various signals and heuristics.
+            <div style="margin: 8px 0;"></div>
+        <strong> It is NOT 100% accurate and should be used as a guide rather than a definitive answer. Do not rely solely on A-Eye for critical decisions, and always consider the broader context of an image when evaluating its authenticity.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

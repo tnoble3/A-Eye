@@ -1,0 +1,76 @@
+{
+  "dataset_root": "/Users/trinitynoble/Documents/AEye/A-Eye/ml/data/image_dataset",
+  "class_to_idx": {
+    "FAKE": 0,
+    "REAL": 1
+  },
+  "feature_names": [
+    "ela_mean_residual",
+    "ela_std_residual",
+    "ela_hotspot_ratio",
+    "ela_p95_residual",
+    "ela_p99_residual",
+    "ela_hotspot_residual_share",
+    "metadata_missing_exif",
+    "metadata_missing_camera_data",
+    "metadata_software_marker",
+    "stats_channel_mean_gap",
+    "stats_channel_std_gap",
+    "stats_noise_inconsistency"
+  ],
+  "split_sizes": {
+    "train": 16,
+    "val": 8,
+    "test": 8
+  },
+  "normalization_profile": {
+    "ela_mean_residual": {
+      "mean": 1.2491726409643888,
+      "std": 0.2540723899505017
+    },
+    "ela_std_residual": {
+      "mean": 1.008651819700996,
+      "std": 0.15805592526825535
+    },
+    "ela_hotspot_ratio": {
+      "mean": 0.04321289062500001,
+      "std": 0.007696778168066811
+    },
+    "ela_p95_residual": {
+      "mean": 3.1715277607242256,
+      "std": 0.5960352301234404
+    },
+    "ela_p99_residual": {
+      "mean": 4.5465277557571735,
+      "std": 0.7292534550455096
+    },
+    "ela_hotspot_residual_share": {
+      "mean": 0.15111405968976516,
+      "std": 0.03778843019416451
+    },
+    "metadata_missing_exif": {
+      "mean": 1.0,
+      "std": 1.0
+    },
+    "metadata_missing_camera_data": {
+      "mean": 1.0,
+      "std": 1.0
+    },
+    "metadata_software_marker": {
+      "mean": 0.0,
+      "std": 1.0
+    },
+    "stats_channel_mean_gap": {
+      "mean": 0.08485568687319756,
+      "std": 0.06719602998104471
+    },
+    "stats_channel_std_gap": {
+      "mean": 0.033124377485364676,
+      "std": 0.038645913263676404
+    },
+    "stats_noise_inconsistency": {
+      "mean": 0.7774965576827526,
+      "std": 0.16251429153108518
+    }
+  }
+}

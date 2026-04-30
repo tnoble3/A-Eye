@@ -1,0 +1,16 @@
+{
+  "name": "a-eye-extension",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Browser extension client for the A-Eye backend service.",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:popup": "playwright test tests/e2e/popup.spec.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1"
+  },
+  "dependencies": {
+    "uvicorn": "^0.0.1-security"
+  }
+}

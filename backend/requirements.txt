@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+httpx
+pillow
+numpy
+python-dotenv
+pytest
+pandas
+tensorflow
+torch
+torchvision
+docker 

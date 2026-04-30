@@ -1,0 +1,83 @@
+{
+  "config": {
+    "dataset_root": "/Users/trinitynoble/Documents/AEye/A-Eye/ml/data/image_dataset",
+    "output_dir": "/Users/trinitynoble/Documents/AEye/A-Eye/ml/artifacts/cnn_baseline",
+    "epochs": 6,
+    "batch_size": 128,
+    "image_size": 32,
+    "learning_rate": 0.001,
+    "val_split": 0.2,
+    "num_workers": 4,
+    "seed": 42,
+    "device": "cpu",
+    "train_limit": null,
+    "val_limit": null,
+    "test_limit": null
+  },
+  "device": "cpu",
+  "class_to_idx": {
+    "FAKE": 0,
+    "REAL": 1
+  },
+  "dataset_sizes": {
+    "train": 80000,
+    "val": 20000,
+    "test": 20000
+  },
+  "best_epoch": 6,
+  "best_val_accuracy": 0.9151,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.47028837275505064,
+      "train_accuracy": 0.774975,
+      "val_loss": 0.3495730124950409,
+      "val_accuracy": 0.85395,
+      "epoch_seconds": 70.02168437499495
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.34289691860675814,
+      "train_accuracy": 0.85565,
+      "val_loss": 0.314623402929306,
+      "val_accuracy": 0.86655,
+      "epoch_seconds": 42.10884545800218
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.29510104224681855,
+      "train_accuracy": 0.878075,
+      "val_loss": 0.2608405410289764,
+      "val_accuracy": 0.8924,
+      "epoch_seconds": 42.41382195900951
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.2656255543231964,
+      "train_accuracy": 0.892025,
+      "val_loss": 0.24533734183311462,
+      "val_accuracy": 0.90075,
+      "epoch_seconds": 42.2099443749903
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.2512078784942627,
+      "train_accuracy": 0.8964,
+      "val_loss": 0.25938761558532714,
+      "val_accuracy": 0.89505,
+      "epoch_seconds": 42.4613970000064
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.23756381566524506,
+      "train_accuracy": 0.90465,
+      "val_loss": 0.21509528946876527,
+      "val_accuracy": 0.9151,
+      "epoch_seconds": 42.663553042002604
+    }
+  ],
+  "test": {
+    "loss": 0.21481074514389037,
+    "accuracy": 0.915
+  }
+}
