@@ -6,7 +6,6 @@ numpy
 python-dotenv
 pytest
 pandas
-tensorflow
 torch
 torchvision
 docker 
